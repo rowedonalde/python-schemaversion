@@ -72,10 +72,12 @@ def mysql_update(new_version, history, host, database, user, password,
             has_more_versions = False
         if next[POSVERSION] > current_version:
             # Run this version's change on the database:
+            cursor = conn.cursor()
             cursor.execute(next[POSUP])
             # Update the version number:
-            cursor.execute('INSERT INTO ' + TABLE + ' (' + FIELD + ') VALUES ('
-                           + str(next[POSVERSION]) + ')')
+            cursor = conn.cursor()
+            cursor.execute('UPDATE ' + TABLE + ' SET ' + FIELD + '='
+                           + str(next[POSVERSION]))
 
 class InvalidVersion(ValueError):
     '''Raise this if a user specifies a nonexistent version.'''
